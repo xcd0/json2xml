@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -126,33 +125,17 @@ func main() {
 }
 
 func Json2Xml() {
-	if false {
-		in, err := io.ReadAll(os.Stdin)
-		if err != nil {
-			panic(errors.Errorf("%v", err))
-		}
-		//log.Printf("%v", string(in))
-		m, err := mxj.NewMapJson(in)
-		if err != nil {
-			panic(errors.Errorf("%v", err))
-		}
-		b, err := m.XmlIndent("", "\t")
-		if err != nil {
-			panic(errors.Errorf("%v", err))
-		}
-		str := string(b)
-		fmt.Println(str)
-	} else {
-		m, err := mxj.NewMapJsonReader(os.Stdin)
-		if err != nil {
-			panic(errors.Errorf("%v", err))
-		}
-		if err := m.XmlIndentWriter(os.Stdout, "", "\t"); err != nil {
-			panic(errors.Errorf("%v", err))
-		}
+	mxj.XMLEscapeChars(true)
+	m, err := mxj.NewMapJsonReader(os.Stdin)
+	if err != nil {
+		panic(errors.Errorf("%v", err))
+	}
+	if err := m.XmlIndentWriter(os.Stdout, "", "\t"); err != nil {
+		panic(errors.Errorf("%v", err))
 	}
 }
 func JsonFile2Xml(args *Args, path string) (string, error) {
+	mxj.XMLEscapeChars(true)
 	ms, err := mxj.NewMapsFromJsonFile(path)
 	if err != nil {
 		panic(errors.Errorf("%v", err))
@@ -167,6 +150,7 @@ func JsonFile2Xml(args *Args, path string) (string, error) {
 }
 
 func Xml2Json() {
+	mxj.XMLEscapeChars(true)
 	m, err := mxj.NewMapXmlReader(os.Stdin)
 	if err != nil {
 		panic(errors.Errorf("%v", err))
@@ -176,6 +160,7 @@ func Xml2Json() {
 	}
 }
 func XmlFile2Json(args *Args, path string) (string, error) {
+	mxj.XMLEscapeChars(true)
 	ms, err := mxj.NewMapsFromXmlFile(path)
 	if err != nil {
 		panic(errors.Errorf("%v", err))
