@@ -1,4 +1,4 @@
-module json2xml
+module github.com/xcd0/json2xml
 
 go 1.22.0
 
