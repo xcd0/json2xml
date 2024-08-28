@@ -143,7 +143,7 @@ func JsonFile2Xml(args *Args, path string) (string, error) {
 	if err != nil {
 		panic(errors.Errorf("%v", err))
 	}
-	out := replaceExt(path, ".json", ".xml")
+	out := replaceExt(path, ".xml")
 	log.Printf("%v -> %v", path, out)
 	os.RemoveAll(out)
 	if err := ms.XmlFileIndent(out, "", "\t"); err != nil {
@@ -168,7 +168,7 @@ func XmlFile2Json(args *Args, path string) (string, error) {
 	if err != nil {
 		panic(errors.Errorf("%v", err))
 	}
-	out := replaceExt(path, ".xml", ".json")
+	out := replaceExt(path, ".json")
 	log.Printf("%v -> %v", path, out)
 	os.RemoveAll(out)
 	if err := ms.JsonFileIndent(out, "", "\t"); err != nil {
@@ -314,9 +314,9 @@ func GetFileNameWithoutExt(path string) string {
 func GetFilePathWithoutExt(path string) string {
 	return filepath.ToSlash(filepath.Join(filepath.Dir(path), GetFileNameWithoutExt(path)))
 }
-func replaceExt(filePath, from, to string) string {
+func replaceExt(filePath, to string) string {
 	ext := filepath.Ext(filePath)
-	if len(from) > 0 && ext != from {
+	if len(to) <= 0 {
 		return filePath
 	}
 	return filePath[:len(filePath)-len(ext)] + to
