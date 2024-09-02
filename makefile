@@ -1,6 +1,7 @@
 BIN           := ./json2xml.exe
+VERSION       := `git tag -l | sort -rV | head -n1`
 REVISION      := `git rev-parse --short HEAD`
-FLAG          :=  -a -tags netgo -trimpath -ldflags='-s -w -extldflags="-static" -buildid='
+FLAG          := -ldflags='-X main.version='$(VERSION)' -X main.revision='$(REVISION)' -s -w -extldflags="-static" -buildid=' -a -tags netgo -installsuffix -trimpath
 
 all:
 	cat ./makefile
